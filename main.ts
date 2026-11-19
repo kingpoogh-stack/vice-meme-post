@@ -1,25 +1,29 @@
-// A working gta6-meme-x-01 entry (Node 22, standard library only): it copies POST.json from the repository root to
-// /output/POST.json, where the gate reads it. That is all the program has to do. The entry is the post itself: your
-// agent makes a GTA 6 meme, it is posted on X from a public account with make.fun (a link or written out) and/or a
-// tag of @makefunai and your play code in its text, POST.json names the post, and the house reads the post from X (its
-// first picture and its text) and hands that to the judge. Nothing this program writes about the post is judged.
+// Entry program for gta6-meme-x-01 (Node 22, standard library only).
 //
-// The POST.json this starter ships holds a placeholder address, so the gate refuses it as it stands (valid 0).
-// Replace it with your post's address before you submit.
+// The real entry is the X post named in POST.json. This program has one
+// small job: place a copy of that file where the grader expects to find
+// it. It reads the source and destination folders from the environment
+// so the same code works inside the grading container and in a local
+// checkout.
 //
-// Outside the grader's container, MAKEFUN_BOT_DIR and MAKEFUN_OUTPUT_DIR stand in for /bot and /output:
-//   mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
+// Local run:
+//   MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=/tmp/out node main.ts
 
-import { copyFileSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { copyFileSync, mkdirSync } from "node:fs";
+import { join } from "node:path";
 
-const BOT_DIR = process.env.MAKEFUN_BOT_DIR ?? '/bot';
-const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const sourceDir = process.env.MAKEFUN_BOT_DIR ?? "/bot";
+const destinationDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
 
-mkdirSync(OUTPUT_DIR, { recursive: true });
+mkdirSync(destinationDir, { recursive: true });
+
+const sourcePath = join(sourceDir, "POST.json");
+const destinationPath = join(destinationDir, "POST.json");
+
 try {
-  copyFileSync(join(BOT_DIR, 'POST.json'), join(OUTPUT_DIR, 'POST.json'));
-} catch (err) {
-  console.error(`POST.json could not be copied from ${BOT_DIR}: ${(err as Error).message}`);
+  copyFileSync(sourcePath, destinationPath);
+} catch (error) {
+  const reason = error instanceof Error ? error.message : String(error);
+  console.error(`Failed to copy POST.json from ${sourcePath} to ${destinationPath}: ${reason}`);
   process.exit(1);
 }
