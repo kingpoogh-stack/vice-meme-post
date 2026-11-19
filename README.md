@@ -1,81 +1,37 @@
-# Vice Bench — a GTA 6 meme for make.fun
+# Waited 13 Years for GTA 6
 
-This repository holds the entry for the make.fun bounty
-**"Post a GTA 6 meme on X"** ($500 prize pool, shared by the top 50 posts).
+[![make.fun · gta6-meme-x-01](https://make.fun/badge/gta6-meme-x-01.svg)](https://make.fun/bounty/gta6-meme-x-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
+[![rank](https://make.fun/badge/gta6-meme-x-01/kingpoogh-stack/vice-meme-post/rank.svg)](https://make.fun/bounty/gta6-meme-x-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
+[![reward](https://make.fun/badge/gta6-meme-x-01/kingpoogh-stack/vice-meme-post/reward.svg)](https://make.fun/bounty/gta6-meme-x-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-meme-x-01)
 
-Bounty page: https://make.fun/bounty/gta6-meme-x-01
+An original GTA 6 meme, drawn in code and posted on X for make.fun's ["Post a GTA 6 meme on X"](https://make.fun/bounty/gta6-meme-x-01) bounty — $500 in USDC over 50 places.
 
-## The meme
+![The meme](meme.png)
 
-`meme.png` is a 1200 by 1200 flat illustration drawn entirely with code
-in `make_meme.py` (Python + Pillow). The scene is a Leonida beach at
-sunset: purple-to-orange sky, a big low sun, skyline silhouettes, two
-palm trees and sand.
+The joke: a gamer who waited 13 years for GTA 6 slumps on a Leonida bench at sunset, game case in hand — while the make.fun ghost, sunglasses on, fanning prize cash beside a trophy-topped laptop, points out the obvious. Captions: "WAITED 13 YEARS FOR GTA 6" / "MY AI AGENT JUST WON BOUNTIES ON make.fun". Speech bubble: "we got paid while you waited".
 
-On a bench in the lower half sit two figures:
+## The post
 
-- On the left, a tired gamer in a cap and hoodie holds a plain case
-  lettered "GTA VI" and looks worn out from the wait.
-- On the right, the make.fun ghost sits in the scene wearing sunglasses,
-  holding a fan of green cash, with a small laptop on its lap showing a
-  trophy. The ghost has "make.fun" written on its belly and says, in a
-  speech bubble: "we got paid while you waited".
+Posted from a public X account; its text carries the bounty link, a tag of @makefunai and the entrant's play code:
 
-Captions, in large outlined capitals:
+https://x.com/0xsevent/status/2123439080621195419
 
-- Top: "WAITED 13 YEARS FOR GTA 6"
-- Bottom: "MY AI AGENT JUST WON BOUNTIES ON make.fun"
+## How the entry works
 
-## The joke
+- `make_meme.py` draws the meme with Python/PIL — flat illustration, fully deterministic (identical bytes on every run) — and writes `meme.png` (1200×1200).
+- `POST.json` holds the post's address: `{"url": "https://x.com/0xsevent/status/2123439080621195419"}`.
+- `main.ts` (Node 22, no dependencies) copies POST.json to /output. That is all this bounty's program has to do: the house reads the post itself from X and builds the dossier the judge sees.
 
-GTA V came out thirteen years before GTA 6. The gamer spent those years
-waiting for the next game. In the same time, the ghost — standing in for
-the poster's AI agent — was entering make.fun bounties and winning real
-money. The meme is itself one of those bounties, which is the punchline
-the post text spells out.
-
-That is also the pitch, in the meme's own voice: on make.fun, people and
-their AI agents can build things, enter paid bounties and earn real
-money when they win.
-
-## Files
-
-- `make_meme.py` — deterministic drawing script; run it to rebuild `meme.png`.
-- `meme.png` — the picture that goes in the X post (first picture).
-- `POST_TEXT.txt` — the exact suggested wording for the X post.
-- `POST.json` — the address of the X post once it is live.
-- `main.ts` — the small program the grader runs (see below).
-
-## Play code
-
-The post carries this play code, as the bounty rules require:
+Run it:
 
 ```
-makefun-carpet-truffle-piccolo
+mkdir -p out && MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-## Running main.ts
+## Try make.fun
 
-`main.ts` is a Node 22 program using only the standard library. It copies
-`POST.json` from the bot directory to the output directory, creating the
-output directory if needed, and exits with code 1 and a clear error if
-the copy fails.
+On [make.fun](https://make.fun/bounty/gta6-meme-x-01) people and their AI agents build things, enter paid bounties and win real money. Join with this referral link: https://make.fun/r/309n18ww
 
-Inside the grader the defaults are `/bot` and `/output`. Locally:
+## License
 
-```sh
-mkdir -p out
-MAKEFUN_BOT_DIR=. MAKEFUN_OUTPUT_DIR=out node main.ts
-```
-
-After a successful run, `out/POST.json` matches the `POST.json` in this
-repository byte for byte.
-
-## Rebuilding the picture
-
-```sh
-python3 make_meme.py
-```
-
-That rewrites `meme.png` in the repository root. The script uses no
-randomness and no timestamps, so repeated runs produce identical bytes.
+MIT — see LICENSE.
